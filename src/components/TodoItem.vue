@@ -4,9 +4,9 @@
     class="todo-item">
       <div v-if="isEditMode" class="item__inner item--edit">
         <input
-          ref="titleInput" 
-          v-bind:value="editedTitle" 
-          type="text" 
+          ref="titleInput"
+          v-bind:value="editedTitle"
+          type="text"
           v-on:input="editedTitle = $event.target.value"
           v-on:keypress.enter="editedTodo"
           v-on:keypress.esc="offEditedMode">
@@ -42,7 +42,7 @@
             </button>
         </div>
     </div>
-      
+
   </div>
 </template>
 
@@ -50,69 +50,74 @@
 import dayjs from 'dayjs' // 날짜 관련 경량화 라이브러리
 
 export default {
-    // props를 통해 상위 부모에서 데이터를 가져온다.
-    props: {
-        todo: Object
-    },
-    data() {
-        return {
-            isEditMode: false,
-            editedTitle: ''
-        }
-    },
-    computed: {
-        done: {
-            get() { // 최초 생성 시 호출
-                return this.todo.done
-            },
-            set(done) { // 체크박스 클릭 시 호출된다.
-                this.updateTodo({
-                    done: done
-                })
-            }
-        },
-        date() {
-            const date = dayjs(this.todo.createdAt)
-            const isSame = date.isSame(this.todo.updatedAt)
-
-            if(isSame) {
-                return date.format('YYYY년 MM월 DD일')
-            }else {
-                return `${date.format('YYYY년 MM월 DD일')} (edited)`
-            }
-        }
-    },
-    methods: {
-        editedTodo() {
-            if(this.todo.title !== this.editedTitle) {
-                this.updateTodo({
-                    title: this.editedTitle,
-                    updatedAt: new Date()
-                })
-            }
-            
-            this.offEditMode()
-        },
-        onEditMode() {
-            this.isEditMode = true
-            this.editedTitle = this.todo.title
-
-            // HTML이 렌더링된 후에 실행될 수 있도록 nextTick을 사용
-            // 렌더링이 완료된 후에 $refs로 HTML에 설정된 ref값을 찾을 수 있다.
-            this.$nextTick(() => {
-                this.$refs.titleInput.focus()
-            })
-        },
-        offEditMode() {
-            this.isEditMode = false
-        },
-        updateTodo(value) {
-            this.$emit('update-todo', this.todo, value)
-        },
-        deleteTodo() {
-            this.$emit('delete-todo', this.todo)
-        }
+  // props를 통해 상위 부모에서 데이터를 가져온다.
+  props: {
+    todo: Object
+  },
+  data () {
+    return {
+      isEditMode: false,
+      editedTitle: ''
     }
+  },
+  computed: {
+    done: {
+      get () { // 최초 생성 시 호출
+        return this.todo.done
+      },
+      set (done) { // 체크박스 클릭 시 호출된다.
+        this.updateTodo({
+          done: done
+        })
+      }
+    },
+    date () {
+      const date = dayjs(this.todo.createdAt)
+      const isSame = date.isSame(this.todo.updatedAt)
+
+      if (isSame) {
+        return date.format('YYYY년 MM월 DD일')
+      } else {
+        return `${date.format('YYYY년 MM월 DD일')} (edited)`
+      }
+    }
+  },
+  methods: {
+    editedTodo () {
+      if (this.todo.title !== this.editedTitle) {
+        this.updateTodo({
+          title: this.editedTitle,
+          updatedAt: new Date()
+        })
+      }
+
+      this.offEditMode()
+    },
+    onEditMode () {
+      this.isEditMode = true
+      this.editedTitle = this.todo.title
+
+      // HTML이 렌더링된 후에 실행될 수 있도록 nextTick을 사용
+      // 렌더링이 완료된 후에 $refs로 HTML에 설정된 ref값을 찾을 수 있다.
+      this.$nextTick(() => {
+        this.$refs.titleInput.focus()
+      })
+    },
+    offEditMode () {
+      this.isEditMode = false
+    },
+    updateTodo (value) {
+      // this.$emit('update-todo', this.todo, value)
+      this.$store.dispatch('todoApp/updateTodo', {
+        todo: this.todo,
+        value: value
+      })
+    },
+    deleteTodo () {
+      // this.$emit('delete-todo', this.todo)
+      this.$store.dispatch('todoApp/deleteTodo', this.todo)
+    }
+  }
 }
 </script>
 

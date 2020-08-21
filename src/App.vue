@@ -20,7 +20,7 @@ export default {
 </script>
 
 <style lang="scss">
-  /* 메인 페이지에서는 홈버튼이 필요없기 때문에 
+  /* 메인 페이지에서는 홈버튼이 필요없기 때문에
   rotuer-link-exact-active class가 있는 경우 display를 nonoe으로 설정 */
   .to-home.router-link-exact-active {
     display: none;

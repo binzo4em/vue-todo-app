@@ -8,32 +8,32 @@ import TodoApp from '@/views/TodoApp'
 Vue.use(VueRouter)
 
 const routes = [
-    {
-        name: 'index',
-        path: '/',
-        component: Home
-    },
-    {
-        name: 'about',
-        path: '/about',
-        component: About
-    },
-    {
-        name: 'todos',
-        path: '/todos',
-        redirect: '/todos/all', // /todos/all 로 설정하여 처음에는 모든 항목 페이지로 이동하도록 한다.
-        component: TodoApp,
-        children: [
-            {
-                name: 'todos-filter',
-                path: ':id'
-            }
-        ]
-    }
+  {
+    name: 'index',
+    path: '/',
+    component: Home
+  },
+  {
+    name: 'about',
+    path: '/about',
+    component: About
+  },
+  {
+    name: 'todos',
+    path: '/todos',
+    redirect: '/todos/all', // /todos/all 로 설정하여 처음에는 모든 항목 페이지로 이동하도록 한다.
+    component: TodoApp,
+    children: [
+      {
+        name: 'todos-filter',
+        path: ':id'
+      }
+    ]
+  }
 ]
 
 export default new VueRouter({
-    routes
+  routes
 })
 
 /**
