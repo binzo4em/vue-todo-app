@@ -1,3 +1,4 @@
 # vue-todo-app
 
-vue-router, vuex 적용하기 전 상태
+vue-router 적용
+vuex 미적용

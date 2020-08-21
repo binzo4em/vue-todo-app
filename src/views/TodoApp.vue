@@ -4,21 +4,21 @@
         <div class="todo-app__actions">
             <div class="filters">
                 <!-- filter가 all인 경우에만 active라는 class를 부여 -->
-                <button 
-                    v-bind:class="{ active: filter === 'all' }" 
-                    v-on:click="changeFilter('all')">
+                <router-link
+                    to="all"
+                    tag="button">
                     모든 항목 ({{ total }})
-                </button>
-                <button
-                    v-bind:class="{ active: filter === 'active' }" 
-                    v-on:click="changeFilter('active')">
+                </router-link>
+                <router-link
+                    to="active"
+                    tag="button">
                     해야 할 항목 ({{ activeCount }})
-                </button>
-                <button 
-                    v-bind:class="{ active: filter === 'completed' }"
-                    v-on:click="changeFilter('completed')">
+                </router-link>
+                <router-link
+                    to="completed"
+                    tag="button">
                     완료된 항목 ({{ completedCount }})
-                </button>
+                </router-link>
             </div>
 
             <div class="actions clearfix">
@@ -79,8 +79,8 @@ import _forEachRight from 'lodash/forEachRight'
 import scrollTo from 'scroll-to'
 
 // import components
-import TodoCreator from './TodoCreator'
-import TodoItem from './TodoItem'
+import TodoCreator from '@/components/TodoCreator'
+import TodoItem from '@/components/TodoItem'
 
 export default {
     // 사용할 컴포넌트 등록
@@ -88,12 +88,11 @@ export default {
         TodoCreator,
         TodoItem
     },
-    // data 속성은 함수 형대로 return 할 것
+    // data 속성은 함수 형태로 return 할 것
     data() {
         return {
             db: null,
             todos: [],
-            filter: 'all'
         }
     },
     computed: {
@@ -102,7 +101,7 @@ export default {
          * filter 값이 변경 되면 filteredTodos가 호출된다.
          */
         filteredTodos() {
-            switch(this.filter) {
+            switch(this.$route.params.id) {
                 // all과 default의 내용이 동일한 경우 아래와 같이 묶어서 작성해도 된다.
                 case 'all':
                 default:
@@ -213,9 +212,6 @@ export default {
             // 객체 속성을 삭제, 데이터가 반응성을 가지고 있으면 화면을 갱신한다.
             this.$delete(this.todos, foundIndex)
         },
-        changeFilter(filter) {
-            this.filter = filter
-        },
         completeAll(checked) {
             // DB 갱신
             // 수정된 DB 객체를 newTodos에 저장하여 Local DB 갱신에 사용
@@ -294,5 +290,11 @@ export default {
 </script>
 
 <style lang="scss">
-   @import "../scss/style"
+    /* alis 설정 확인 필요 */
+   @import "../scss/style";
+
+   .filters button.router-link-active {
+        background: royalblue;
+        color: white;
+    }
 </style>

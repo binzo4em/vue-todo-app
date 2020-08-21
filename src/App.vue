@@ -1,17 +1,28 @@
 <template>
-  <TodoApp/>
+  <div>
+    <router-link
+        to="/"
+        class="to-home">
+        <i class="material-icons">home</i>
+    </router-link>
+
+    <router-view/>
+  </div>
 </template>
 
 <script>
-import TodoApp from './components/TodoApp'
-
 export default {
-  components: {
-    TodoApp
+  created () {
+    console.log('Router:', this.$router)
+    console.log('Route:', this.$route)
   }
 }
 </script>
 
-<style>
-
+<style lang="scss">
+  /* 메인 페이지에서는 홈버튼이 필요없기 때문에 
+  rotuer-link-exact-active class가 있는 경우 display를 nonoe으로 설정 */
+  .to-home.router-link-exact-active {
+    display: none;
+  }
 </style>
